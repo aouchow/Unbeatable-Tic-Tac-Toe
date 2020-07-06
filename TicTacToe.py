@@ -41,6 +41,7 @@ def is_space_free(board, position):
         return False
     else:
         return True
+
 def is_comp_first():
     num = randint(0, 1)
     if num == 0:
@@ -58,11 +59,38 @@ def comp_move_random(board, comp_letter):
     insert_letter(board, comp_letter, index)
     print_board(board)
 
+#computer plays reactively. If there is an opportunity to win,
+#computer will place letter in that spot. If there is an
+#opportunity for player to win, computer will block player.
+#else, the computer chooses a move randomly.
+def comp_move_to_win(board, comp_letter, player_letter):
+    for index in range (1, 10):
+        if not is_space_free(board, index):
+            continue
+        else:
+            insert_letter(board, comp_letter, index)
+            if is_Winner(board, comp_letter):
+                print("Computer placed '" + comp_letter + "' in position ", index)
+                print_board(board)
+                return
+            insert_letter(board, player_letter, index)
+            if is_Winner(board, player_letter):
+                insert_letter(board, comp_letter, index)
+                print("Computer placed '" + comp_letter + "' in position ", index)
+                print_board(board)
+                return
+            else:
+                board[index] = " "
+    comp_move_random(board, comp_letter)
+
+def comp_move_unbeatable(board, comp_letter, player_letter):
+
+
 def player_move(board, player_letter):
     while True:
         try:
-            index = input("Please select a position to place '" + player_letter + \
-            "' (1-9): ")
+            index = input("Please select a position to place '" + player_letter \
+            + "' (1-9): ")
             if index not in [1,2,3,4,5,6,7,8,9]:
                 print("Not a valid move.")
             else:
@@ -95,7 +123,7 @@ def play_game():
     number_of_moves = 0
     while number_of_moves < 9:
         if comp_first:
-            comp_move_random(board, comp_letter)
+            comp_move_to_win(board, comp_letter, player_letter)
             number_of_moves += 1
             if is_Winner(board, comp_letter):
                 print(comp_letter + " wins!")
