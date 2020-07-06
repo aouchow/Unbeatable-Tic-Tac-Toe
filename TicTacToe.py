@@ -64,6 +64,7 @@ def comp_move_random(board, comp_letter):
 #opportunity for player to win, computer will block player.
 #else, the computer chooses a move randomly.
 def comp_move_to_win(board, comp_letter, player_letter):
+    #comp looks to win
     for index in range (1, 10):
         if not is_space_free(board, index):
             continue
@@ -73,6 +74,13 @@ def comp_move_to_win(board, comp_letter, player_letter):
                 print("Computer placed '" + comp_letter + "' in position ", index)
                 print_board(board)
                 return
+            else:
+                board[index] = " "
+    #comp looks to block player from winning
+    for index in range (1, 10):
+        if not is_space_free (board, index):
+            continue
+        else:
             insert_letter(board, player_letter, index)
             if is_Winner(board, player_letter):
                 insert_letter(board, comp_letter, index)
@@ -84,7 +92,7 @@ def comp_move_to_win(board, comp_letter, player_letter):
     comp_move_random(board, comp_letter)
 
 def comp_move_unbeatable(board, comp_letter, player_letter):
-
+    pass
 
 def player_move(board, player_letter):
     while True:
@@ -108,8 +116,8 @@ def play_game():
     board = [" " for x in range(10)]
     board_instructions = ["0","1","2","3","4","5","6","7","8","9"]
     print("Welcome to Tic Tac Toe. To win complete a straight line of your \
-    letter (Diagonal, Horizontal, or Vertical). The board has positions 1-9 \
-    starting at the top left.")
+letter (Diagonal, Horizontal, or Vertical). The board has positions 1-9 \
+starting at the top left.")
     print_board(board_instructions)
     comp_first = is_comp_first()
     if comp_first:
